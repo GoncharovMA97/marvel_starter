@@ -2,6 +2,7 @@ import { Component } from 'react/cjs/react.production.min';
 import MarvelServices from '../../services/MarvelServices';
 import Spinner from '../spinner/Spinner';
 import ErrorMesage from '../errorMessage/ErrorMesage';
+import PropTypes from 'prop-types';
 
 import './charList.scss';
 
@@ -31,7 +32,7 @@ class CharList extends Component {
     }
 
     onCharListLoaded = (newCharList) => {
-        const onEnd = false;
+        let onEnd = false;
 
         if (this.state.offset > 1561) {
             onEnd = true;
@@ -94,6 +95,10 @@ class CharList extends Component {
             </div>
         )
     }
+}
+
+CharList.propTypes = {
+    onCharSelected: PropTypes.func
 }
 
 export default CharList;
