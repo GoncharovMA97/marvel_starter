@@ -16,12 +16,11 @@ const RandomChar = () => {
 
     useEffect(() => {
         updateChar();
-    }, [char])
+    }, [])
 
     const onCharLoaded = (char) => {
         setChar(char);
         setLoading(false);
-        setError(false);
     }
 
     const onError = () => {
