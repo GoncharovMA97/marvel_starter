@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import MarvelServices from '../../services/MarvelServices';
+import useMarvelServices from '../../services/MarvelServices';
 import Spinner from '../spinner/Spinner';
 import ErrorMesage from '../errorMessage/ErrorMesage';
 import PropTypes from 'prop-types';
@@ -9,24 +9,20 @@ import './charList.scss';
 const CharList = (props) => {
 
     const [charList, setCharlist] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
     const [nemCharLoading, setNemCharLoading] = useState(false);
     const [offset, setOffset] = useState(210);
     const [charEnded, setCharEnded] = useState(false);
 
-    const marvelServices = new MarvelServices();
+    const {loading, error, getAllCharacters} = useMarvelServices();
 
     useEffect(() => {
-        onRequest(offset);
+        onRequest(offset, true);
     }, [])
 
-    const onRequest = (offset) => {
-        setNemCharLoading(true);
-        marvelServices
-            .getAllCharacters(offset)
-            .then(onCharListLoaded)
-            .catch(onError);
+    const onRequest = (offset, initial = false) => {
+        setNemCharLoading(!initial);
+        getAllCharacters(offset)
+            .then(onCharListLoaded);
     }
 
     const onCharListLoaded = (newCharList) => {
@@ -37,16 +33,9 @@ const CharList = (props) => {
         };
 
         setCharlist((charList) => [...charList, ...newCharList]);
-        setLoading(false);
-        setError(false);
         setNemCharLoading(false);
         setOffset((offset) => offset + 9);
         setCharEnded(onEnd);
-    }
-
-    const onError = () => {
-        setLoading(false);
-        setError(true);
     }
 
     const inputArrTransform = (arr) => {
@@ -72,14 +61,13 @@ const CharList = (props) => {
 
     }
 
-    const load = loading ? <Spinner/> : null;
+    const load = loading && !nemCharLoading ? <Spinner/> : null;
     const errorMessage = error ? <ErrorMesage/> : null;
-    const content = !(load || errorMessage) ? inputArrTransform(charList) : null;
     return (
         <div className="char__list">
             {load}
             {errorMessage}
-            {content}
+            {inputArrTransform(charList)}
             <button 
                 onClick={() => onRequest(offset)}
                 disabled={nemCharLoading}
