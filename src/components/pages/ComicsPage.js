@@ -5,8 +5,8 @@ import ComicsList from "../comicsList/ComicsList"
 const ComicsPage = () => {
     return(
         <>
-        <AppBanner/>
-        <ComicsList/>
+            <AppBanner/>
+            <ComicsList/>
         </>
     )
 }

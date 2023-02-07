@@ -31,6 +31,7 @@ const CharInfo = (props) => {
     const load = loading ? <Spinner/> : null;
     const errorMessage = error ? <ErrorMesage/> : null;
     const content = !(load || errorMessage || !char) ? <View char={char}/> : null;
+    
     return (
         <div className="char__info">
             {skeleton}
