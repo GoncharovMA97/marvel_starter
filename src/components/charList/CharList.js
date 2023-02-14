@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import useMarvelServices from '../../services/MarvelServices';
 import Spinner from '../spinner/Spinner';
 import ErrorMesage from '../errorMessage/ErrorMesage';
@@ -43,19 +44,23 @@ const CharList = (props) => {
             const imgNA = item.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg';
             const styleImg = imgNA ? {objectFit: 'unset'} : {objectFit: 'cover'};
             return(
-                <li className="char__item" 
-                    key={item.id} 
-                    tabIndex={0}
-                    onFocus={() => props.onCharSelected(item.id)}
-                >
-                    <img src={item.thumbnail} style={styleImg} alt={item.name}/>
-                    <div className="char__name">{item.name}</div>
-                </li>
+                <CSSTransition timeout={500} classNames="char__item">
+                    <li className="char__item" 
+                        key={item.id} 
+                        tabIndex={0}
+                        onFocus={() => props.onCharSelected(item.id)}
+                    >
+                        <img src={item.thumbnail} style={styleImg} alt={item.name}/>
+                        <div className="char__name">{item.name}</div>
+                    </li>
+                </CSSTransition>
             );
         });
         return(
             <ul className="char__grid">
-                {newArr}
+                <TransitionGroup component={null}>
+                    {newArr}
+                </TransitionGroup>
             </ul>
         );
 
