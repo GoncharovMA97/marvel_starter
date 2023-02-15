@@ -44,9 +44,8 @@ const CharList = (props) => {
             const imgNA = item.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg';
             const styleImg = imgNA ? {objectFit: 'unset'} : {objectFit: 'cover'};
             return(
-                <CSSTransition timeout={500} classNames="char__item">
+                <CSSTransition key={item.id} timeout={500} classNames="char__item">
                     <li className="char__item" 
-                        key={item.id} 
                         tabIndex={0}
                         onFocus={() => props.onCharSelected(item.id)}
                     >

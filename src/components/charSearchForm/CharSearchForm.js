@@ -1,17 +1,18 @@
 import { useForm } from "react-hook-form";
 import useMarvelServices from '../../services/MarvelServices';
-import Spinner from '../spinner/Spinner';
 import ErrorMesage from '../errorMessage/ErrorMesage';
-import PropTypes from 'prop-types';
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 import './charSearchForm.scss';
 
-const CharSearchForm = (props) => {
+const CharSearchForm = () => {
     const [char, setChar] = useState(null);   
     const { register, handleSubmit, formState: { errors } } = useForm();
     const {loading, error, getCharacterByName} = useMarvelServices();
 
-    const onSubmit = data => updateChar(data);
+    const onSubmit = data => updateChar(data.name);
+    // const onSubmit = data => console.log(data.name);
 
     const updateChar = (name) => {
 
@@ -22,6 +23,8 @@ const CharSearchForm = (props) => {
         getCharacterByName(name)
             .then(setChar);
     }
+
+    console.log(char)
 
     const errorMessage = error ? <div className="char__search-critical-error"><ErrorMesage /></div> : null;
     const results = !char ? null : char.length > 0 ?
@@ -39,19 +42,17 @@ const CharSearchForm = (props) => {
     return (
     <div className="char__search-form">
         <label className="char__search-label">Or find a character by name:</label>
-        /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
         <form onSubmit={handleSubmit(onSubmit)} className="char__search-wrapper">
-            {/* register your input into the hook by invoking the "register" function */}
             <input {...register("name", { required: true })} placeholder="Enter name"/>
-            {/* errors will return when field validation fails  */}
             <div className="char__search-error">
                 {errors.name && <span>This field is required</span>}
             </div>
-            <input type="submit" 
+            <button type="submit" 
                     className="button button__main"
-                    disabled={loading}>
+                    disabled={loading}
+                    >
                 <div className="inner">find</div>
-            </input>
+            </button>
         </form>
         {errorMessage}
         {results}
