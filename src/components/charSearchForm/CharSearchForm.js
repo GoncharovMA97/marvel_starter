@@ -12,7 +12,6 @@ const CharSearchForm = () => {
     const {loading, error, getCharacterByName} = useMarvelServices();
 
     const onSubmit = data => updateChar(data.name);
-    // const onSubmit = data => console.log(data.name);
 
     const updateChar = (name) => {
 
@@ -23,8 +22,6 @@ const CharSearchForm = () => {
         getCharacterByName(name)
             .then(setChar);
     }
-
-    console.log(char)
 
     const errorMessage = error ? <div className="char__search-critical-error"><ErrorMesage /></div> : null;
     const results = !char ? null : char.length > 0 ?
